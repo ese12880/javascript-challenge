@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>UFO Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="static/css/style.css">
@@ -39,31 +41,55 @@
                         <label for="date">Enter a Date</label>
                         <input class="form-control" id="datetime" type="text" placeholder="1/11/2011">
                       </li>
+                      <li class="filter list-group-item">
+                        <label for="date">Choose a Country</label>
+                        <select id="countryDropdown">
+                          <option class="optionPlaceholder">all</option>
+                        </select>
+                      </li>
+                      <li class="filter list-group-item">
+                        <label for="date">Choose a State</label>
+                        <select id="stateDropdown">
+                          <option class="optionPlaceholder">all</option>
+                        </select>
+                      </li>
+                      <li class="filter list-group-item">
+                        <label for="date">Choose a City</label>
+                        <select id="cityDropdown">
+                          <option class="optionPlaceholder">all</option>
+                        </select>
+                      </li>
+                      <li class="filter list-group-item">
+                        <label for="date">Choose a Shape</label>
+                        <select id="shapeDropdown">
+                          <option class="optionPlaceholder">all</option>
+                        </select>
+                      </li>
                     </ul>
                   </div>
-                  <button id="filter-btn" type="button" class="btn btn-default">Filter Table</button>
+                  <div id="filter-button">
+                      <button id="filter-btn" type="submit" class="btn btn-default btn-block">Filter Table</button>
+                  </div>
                 </form>
               </div>
             </div>
           </aside>
         </div>
-        <div class="col-md-10">
-          <div id="table-area" class="">
-            <table id="ufo-table" class="table table-striped">
-              <thead>
-                <tr>
-                  <th class="table-head">Date</th>
-                  <th class="table-head">City</th>
-                  <th class="table-head">State</th>
-                  <th class="table-head">Country</th>
-                  <th class="table-head">Shape</th>
-                  <th class="table-head">Duration</th>
-                  <th class="table-head">Comments</th>
+        <div class="UFOSightings">
+            <table class="UFOSightingsTable">
+              <thead class="UFOSightingsTableHead">
+                <tr class="UFOSightingsTableHeaderRow">
+                  <th class="UFOSightingsTable-Head">Date</th>
+                  <th class="UFOSightingsTable-Head">City</th>
+                  <th class="UFOSightingsTable-Head">State</th>
+                  <th class="UFOSightingsTable-Head">Country</th>
+                  <th class="UFOSightingsTable-Head">Shape</th>
+                  <th class="UFOSightingsTable-Head" >Duration</th>
+                  <th class="UFOSightingsTable-Head">Comments</th>
                 </tr>
-              </thead>
-              <tbody></tbody>
+              </thead> 
+              <tbody class="UFOSightingsTable-Body"></tbody>
             </table>
-          </div>
         </div>
       </div>
     </div>
@@ -72,8 +98,95 @@
     </footer>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
-  <script src="static/js/data.js"></script>
-  <script src="static/js/app.js"></script>
+  <head>
+    <script type="text/javascript" src="Static/js/data.js"></script>
+  </head>
+  <body> 
+    <script type="text/javascript">
+      function createUFOSightingsTable () {
+        const UFODiv = document.querySelector("div.UFOSightings")
+
+        let tableHeaders = ["datetime",    "city",    "state",    "country",    "shape",    "durationMinutes",    "comments"]
+
+        while (UFODiv.firstChild)
+          UFODiv.removeChild(UFODiv.firstChild)
+        
+        let UFOSightingsTable = document.createElement('table')
+      
+
+        UFOSightingsTable.className = 'UFOSightingsTable'
+
+        let UFOSightingsTableHead = document.createElement('thead')
+        UFOSightingsTableHead.className = 'UFOSightingsTableHead'
+
+        let UFOSightingsTableHeaderRow = document.createElement('tr')
+        UFOSightingsTableHeaderRow.className = 'UFOSightingsTableHeaderRow'
+
+        tableHeaders.forEach(header => {
+          let UFOSightingsHeader = document.createElement('th')
+
+          UFOSightingsHeader.innerText = header
+
+          UFOSightingsTableHeaderRow.append(UFOSightingsHeader)
+        })
+
+        UFOSightingsTableHead.append(UFOSightingsTableHeaderRow)
+
+        UFOSightingsTable.append(UFOSightingsTableHead)
+
+        let UFOSightingsTableBody = document.createElement('tbody')
+
+        UFOSightingsTableBody.className = "UFOSightingsTable-Body"
+
+        UFOSightingsTable.append(UFOSightingsTableBody)
+
+        UFODiv.append(UFOSightingsTable)
+
+      }
+
+      function appendUFOSightings (singleSighting, singleSightingIndex) {
+        const UFOSightingsTable = document.querySelector('.UFOSightingsTable')
+
+        let UFOSightingsTableBodyRow = document.createElement('tr')
+        UFOSightingsTableBodyRow.className = 'UFOSightingsTableBodyRow'
+
+        let datetime = document.createElement('td')
+        datetime.innerText = singleSighting.datetime
+
+        let city = document.createElement('td')
+        city.innerText = singleSighting.city
+
+        let state = document.createElement('td')
+        state.innerText = singleSighting.state
+
+        let country = document.createElement('td')
+        country.innerText = singleSighting.country
+
+        let shape = document.createElement('td')
+        shape.innerText = singleSighting.shape
+
+        let durationMinutes = document.createElement('td')
+        durationMinutes.innerText = singleSighting.durationMinutes
+
+        let comments = document.createElement('td')
+        comments.innerText = singleSighting.comments
+
+        UFOSightingsTableBodyRow.append(datetime, city, state, country, shape, durationMinutes, comments)
+
+        UFOSightingsTable.append(UFOSightingsTableBodyRow)
+      }
+      function loadTableData()
+      {
+        data.forEach(appendUFOSightings);
+      }
+      createUFOSightingsTable();
+      loadTableData();
+    </script>
+  </body>
+  <script src="Static/js/app.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
