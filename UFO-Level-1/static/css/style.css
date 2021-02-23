@@ -81,6 +81,7 @@ select {
 #table-area th:nth-child(2),
 #table-area th:nth-child(6) {
   min-width: 70px;
+  word-wrap: break-word;
 }
 
 .loader {
