@@ -37,11 +37,12 @@ d3.select("tbody").html("");
 
 
 d3.event.preventDefault();
-t
-var dateTime = d3.select("#datetime").property("value");
+
+var dateTime = d3.select("#datetime").property("#text");
 console.log(dateTime);
 
-var filteredData = tableData.filter(record => record.datetime === dateTime);
+
+var filteredData = (tableData).filter(function() { ((tableData).toggle((tableData).text().indexOf(dateTime) > -1))});
 console.log(filteredData)
 
 
