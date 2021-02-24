@@ -27,6 +27,31 @@ tableData.forEach(appendTable);
 
 var submit = d3.select("#filter-btn");
 
+// Part 1: Use a date form in your HTML document and write JavaScript code that will listen for events and search through the date/time column to find rows that match user input.
+
+
+submit.on("click", function() {
+
+
+d3.select("tbody").html("");
+
+
+d3.event.preventDefault();
+t
+var dateTime = d3.select("#datetime").property("value");
+console.log(dateTime);
+
+var filteredData = tableData.filter(record => record.datetime === dateTime);
+console.log(filteredData)
+
+
+filteredData.forEach(appendTable);
+
+});
+
+// Part 2: Using multiple input tags and/or select dropdowns, write JavaScript code so the user can set multiple filters and search for UFO sightings using the following criteria based on the table columns: date/time, city, state, country, shape
+
+
 
 var countries = [];
 tableData.forEach(record => {
